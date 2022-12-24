@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitInstance {
     companion object{
 
-        const val BASE_URL = "https://android-messaging.branch.co/api/"
+        private const val BASE_URL = "https://android-messaging.branch.co/api/"
 
         private val retrofit by lazy {
             val logging = HttpLoggingInterceptor()
@@ -16,6 +16,7 @@ class RetrofitInstance {
 
             val client = OkHttpClient.Builder()
                 .addInterceptor(logging)
+                .addInterceptor(HeaderInterceptor())
                 .build()
 
             Retrofit.Builder()

@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
+import io.github.jyotimoykashyap.chatapp.util.SharedPref
 import io.github.jyotimoykashyap.chatapp.databinding.ActivityMainBinding
 import io.github.jyotimoykashyap.chatapp.ui.util.SharedViewModel
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
-
+        SharedPref.createSharedPreferences(applicationContext)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
