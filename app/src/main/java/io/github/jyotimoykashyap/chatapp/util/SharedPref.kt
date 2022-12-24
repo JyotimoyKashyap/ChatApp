@@ -7,6 +7,9 @@ import androidx.security.crypto.MasterKeys
 
 object SharedPref {
 
+    // keys
+    const val BRANCH_AUTH_TOKEN = "X-Branch-Auth-Token"
+
     private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
     lateinit var sharedPreferences: SharedPreferences
 
@@ -49,6 +52,12 @@ object SharedPref {
                     .apply()
             }
         }
+    }
+
+    fun readEntry(key: String) : String {
+        val value = sharedPreferences
+            .getString(key, "null")
+        return value ?: "null"
     }
 
     fun readEntry(key: String, type: Any) =
