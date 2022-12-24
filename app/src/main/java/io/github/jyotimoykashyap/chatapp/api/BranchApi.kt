@@ -12,7 +12,7 @@ import retrofit2.http.POST
 interface BranchApi {
 
     @GET("messages")
-    fun getAllMessages() : Response<List<MessageResponse>>
+    suspend fun getAllMessages() : Response<List<MessageResponse>>
 
     @POST("login")
     suspend fun login(
