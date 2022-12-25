@@ -9,8 +9,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import io.github.jyotimoykashyap.chatapp.R
 import io.github.jyotimoykashyap.chatapp.databinding.FragmentHomeBinding
+import io.github.jyotimoykashyap.chatapp.models.postmessage.MessageResponse
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
 import io.github.jyotimoykashyap.chatapp.util.Resource
 import io.github.jyotimoykashyap.chatapp.viewmodels.HomeViewModel
@@ -26,6 +26,7 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var map = mutableMapOf<Int, MutableList<MessageResponse>>()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val sharedViewModel: SharedViewModel by activityViewModels()
@@ -66,12 +67,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeChanges() {
-
         // messages live data
         viewModel.messagesLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
                     sharedViewModel.loaderState.postValue(false)
+                    if(it.data.isNullOrEmpty()) {
+                        displayNoMessagesScreen(true)
+                    } else {
+                        displayNoMessagesScreen(false)
+                        map = organizeMessages(it.data)
+                    }
                 }
                 is Resource.Loading -> {
                     sharedViewModel.loaderState.postValue(true)
@@ -82,6 +88,25 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    private fun displayNoMessagesScreen(value: Boolean) {
+        binding.run {
+            if(value) {
+                noMessagesImg.visibility = View.VISIBLE
+                noMessagesTv.visibility = View.VISIBLE
+            } else {
+                noMessagesImg.visibility = View.GONE
+                noMessagesTv.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun organizeMessages(messageList: List<MessageResponse>) =
+        messageList.associateBy(
+            keySelector = { it.thread_id },
+            valueTransform = { mutableListOf(it) }
+        ).toMutableMap()
+
 
     override fun onDestroyView() {
         super.onDestroyView()
