@@ -81,22 +81,29 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Loading -> {
                     sharedViewModel.loaderState.postValue(true)
+                    displayNoMessagesScreen(true)
                 }
                 is Resource.Error -> {
                     sharedViewModel.loaderState.postValue(false)
+                    displayNoMessagesScreen(true)
                 }
             }
         }
     }
+
+    private fun getListForAdapter(map: Map<Int, List<MessageResponse>>) = map.values.map { it.first() }
+
 
     private fun displayNoMessagesScreen(value: Boolean) {
         binding.run {
             if(value) {
                 noMessagesImg.visibility = View.VISIBLE
                 noMessagesTv.visibility = View.VISIBLE
+                rvMessageView.visibility = View.GONE
             } else {
                 noMessagesImg.visibility = View.GONE
                 noMessagesTv.visibility = View.GONE
+                rvMessageView.visibility = View.VISIBLE
             }
         }
     }
