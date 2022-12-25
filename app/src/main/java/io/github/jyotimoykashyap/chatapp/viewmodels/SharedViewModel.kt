@@ -1,4 +1,4 @@
-package io.github.jyotimoykashyap.chatapp.ui.util
+package io.github.jyotimoykashyap.chatapp.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

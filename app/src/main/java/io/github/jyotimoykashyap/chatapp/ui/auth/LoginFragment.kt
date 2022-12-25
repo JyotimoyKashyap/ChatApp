@@ -1,8 +1,6 @@
 package io.github.jyotimoykashyap.chatapp.ui.auth
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Patterns
@@ -19,9 +17,8 @@ import io.github.jyotimoykashyap.chatapp.R
 import io.github.jyotimoykashyap.chatapp.databinding.FragmentLoginBinding
 import io.github.jyotimoykashyap.chatapp.models.login.LoginRequest
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
-import io.github.jyotimoykashyap.chatapp.ui.util.Resource
+import io.github.jyotimoykashyap.chatapp.util.Resource
 import io.github.jyotimoykashyap.chatapp.viewmodels.LoginViewModel
-import io.github.jyotimoykashyap.chatapp.viewmodels.SplashViewModel
 
 
 private const val ARG_PARAM1 = "param1"

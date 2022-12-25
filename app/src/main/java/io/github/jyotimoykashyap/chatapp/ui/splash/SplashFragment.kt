@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import io.github.jyotimoykashyap.chatapp.R
 import io.github.jyotimoykashyap.chatapp.databinding.FragmentSplashBinding
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
-import io.github.jyotimoykashyap.chatapp.ui.util.Resource
+import io.github.jyotimoykashyap.chatapp.util.Resource
 import io.github.jyotimoykashyap.chatapp.viewmodels.SplashViewModel
 
 

@@ -13,7 +13,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import io.github.jyotimoykashyap.chatapp.util.SharedPref
 import io.github.jyotimoykashyap.chatapp.databinding.ActivityMainBinding
-import io.github.jyotimoykashyap.chatapp.ui.util.SharedViewModel
+import io.github.jyotimoykashyap.chatapp.viewmodels.SharedViewModel
 
 class MainActivity : AppCompatActivity() {
 

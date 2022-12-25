@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.jyotimoykashyap.chatapp.models.postmessage.MessageResponse
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
-import io.github.jyotimoykashyap.chatapp.ui.util.Resource
+import io.github.jyotimoykashyap.chatapp.util.Resource
 import kotlinx.coroutines.launch
 import retrofit2.Response
 

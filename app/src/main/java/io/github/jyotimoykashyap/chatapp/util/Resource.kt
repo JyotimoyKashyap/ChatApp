@@ -1,4 +1,4 @@
-package io.github.jyotimoykashyap.chatapp.ui.util
+package io.github.jyotimoykashyap.chatapp.util
 
 sealed class Resource<T>(
     val data : T? = null,
