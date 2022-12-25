@@ -26,6 +26,7 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var list = listOf<MessageResponse>()
     private var map = mutableMapOf<Int, MutableList<MessageResponse>>()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -64,6 +65,9 @@ class HomeFragment : Fragment() {
 
     private fun initUi(){
         viewModel.getAllMessages()
+
+        // get adapter
+
     }
 
     private fun observeChanges() {
@@ -77,6 +81,7 @@ class HomeFragment : Fragment() {
                     } else {
                         displayNoMessagesScreen(false)
                         map = organizeMessages(it.data)
+                        list = getListForAdapter(map)
                     }
                 }
                 is Resource.Loading -> {
