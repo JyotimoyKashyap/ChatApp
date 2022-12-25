@@ -1,5 +1,6 @@
 package io.github.jyotimoykashyap.chatapp.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import io.github.jyotimoykashyap.chatapp.databinding.FragmentHomeBinding
 import io.github.jyotimoykashyap.chatapp.models.postmessage.MessageResponse
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
@@ -26,6 +29,7 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var messageAdapter: MessageAdapter
     private var list = listOf<MessageResponse>()
     private var map = mutableMapOf<Int, MutableList<MessageResponse>>()
     private var _binding: FragmentHomeBinding? = null
@@ -63,13 +67,22 @@ class HomeFragment : Fragment() {
         initUi()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun initUi(){
         viewModel.getAllMessages()
 
         // get adapter
+        messageAdapter = MessageAdapter(map, list)
+        binding.rvMessageView.apply {
+            layoutManager =
+                LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            adapter = messageAdapter
+            messageAdapter.notifyDataSetChanged()
+        }
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun observeChanges() {
         // messages live data
         viewModel.messagesLiveData.observe(viewLifecycleOwner) {
@@ -82,6 +95,7 @@ class HomeFragment : Fragment() {
                         displayNoMessagesScreen(false)
                         map = organizeMessages(it.data)
                         list = getListForAdapter(map)
+                        messageAdapter.notifyDataSetChanged()
                     }
                 }
                 is Resource.Loading -> {

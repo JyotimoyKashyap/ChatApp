@@ -16,7 +16,7 @@ class MessageAdapter(val map: Map<Int, List<MessageResponse>>, val list: List<Me
             binding.run {
                 messageBody.text = messageResponse.body
                 timestamp.text = Util.convertTimeStamp(messageResponse.timestamp)
-                val msgCount = map[messageResponse.thread_id]?.size?.minus(1)
+                val msgCount = map[messageResponse.thread_id]?.size?.minus(1) ?: 0
                 messageCount.text = "${msgCount ?: 0} new messages in this thread"
             }
         }
