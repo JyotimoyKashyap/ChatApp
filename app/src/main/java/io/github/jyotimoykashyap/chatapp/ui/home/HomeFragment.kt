@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +14,7 @@ import io.github.jyotimoykashyap.chatapp.databinding.FragmentHomeBinding
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
 import io.github.jyotimoykashyap.chatapp.util.Resource
 import io.github.jyotimoykashyap.chatapp.viewmodels.HomeViewModel
+import io.github.jyotimoykashyap.chatapp.viewmodels.SharedViewModel
 
 
 private const val ARG_PARAM1 = "param1"
@@ -26,6 +28,7 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private val viewModel: HomeViewModel by viewModels {
         val repository = BranchApiRepository()
         object : ViewModelProvider.Factory {
@@ -58,21 +61,23 @@ class HomeFragment : Fragment() {
         initUi()
     }
 
-    fun initUi(){
+    private fun initUi(){
         viewModel.getAllMessages()
     }
 
-    fun observeChanges() {
+    private fun observeChanges() {
+
+        // messages live data
         viewModel.messagesLiveData.observe(viewLifecycleOwner) {
             when(it) {
                 is Resource.Success -> {
-
+                    sharedViewModel.loaderState.postValue(false)
                 }
                 is Resource.Loading -> {
-
+                    sharedViewModel.loaderState.postValue(true)
                 }
                 is Resource.Error -> {
-
+                    sharedViewModel.loaderState.postValue(false)
                 }
             }
         }

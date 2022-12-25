@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,7 @@ import io.github.jyotimoykashyap.chatapp.models.login.LoginRequest
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
 import io.github.jyotimoykashyap.chatapp.util.Resource
 import io.github.jyotimoykashyap.chatapp.viewmodels.LoginViewModel
+import io.github.jyotimoykashyap.chatapp.viewmodels.SharedViewModel
 
 
 private const val ARG_PARAM1 = "param1"
@@ -32,6 +34,7 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private val viewModel: LoginViewModel by viewModels{
         val repository = BranchApiRepository()
         object : ViewModelProvider.Factory {
@@ -41,7 +44,7 @@ class LoginFragment : Fragment() {
         }
     }
 
-    val loginTextChangeListener = object : TextWatcher {
+    private val loginTextChangeListener = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             // not required
         }
@@ -112,12 +115,14 @@ class LoginFragment : Fragment() {
         viewModel.loginLiveData.observe(viewLifecycleOwner){
             when(it) {
                 is Resource.Success -> {
+                    sharedViewModel.loaderState.postValue(false)
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
                 is Resource.Loading -> {
-
+                    sharedViewModel.loaderState.postValue(true)
                 }
                 is Resource.Error -> {
+                    sharedViewModel.loaderState.postValue(false)
                     Snackbar.make(
                         binding.root,"Something went wrong!", Snackbar.LENGTH_SHORT
                     )

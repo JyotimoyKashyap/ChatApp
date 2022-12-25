@@ -1,6 +1,7 @@
 package io.github.jyotimoykashyap.chatapp
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
@@ -47,10 +48,20 @@ class MainActivity : AppCompatActivity() {
         // show or hide loader state
         sharedViewModel.loaderState.observe(this) {
             binding.run {
-                if(it) loader.show()
+                if (it) loader.show()
                 else loader.hide()
             }
         }
+
+        // changes in navigation component
+        findNavController(R.id.nav_host_fragment_content_main)
+            .addOnDestinationChangedListener { _, destination, _ ->
+                Log.i(
+                    "navigation",
+                    "Destination -> ID: ${destination.id}     Label: ${destination.label}"
+                )
+            }
+
     }
 
 
