@@ -53,15 +53,18 @@ class LoginFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {
             // verify for valid email address
             binding.run {
-                if(usernameEditText.text.toString().isBlank()) {
+                if(!isValidEmail(usernameEditText.text.toString())) {
                     usernameInputLayout.error = "Please enter your Email Address"
+                    loginBtn.isEnabled = false
+                }
+                else if(passowrdEditText.text.toString().isBlank()) {
+                    passwordInputLayout.error = "Please enter your password"
+                    loginBtn.isEnabled = false
                 }
                 else {
-                    if(isValidEmail(usernameEditText.text.toString())) {
-                        loginBtn.isEnabled = true
-                        usernameInputLayout.error = null
-                    }
-                    else usernameInputLayout.error = "Please enter a valid Email Address"
+                    loginBtn.isEnabled = true
+                    usernameInputLayout.error = null
+                    passwordInputLayout.error = null
                 }
             }
         }
@@ -92,10 +95,11 @@ class LoginFragment : Fragment() {
     private fun initUI() {
         binding.apply {
             usernameEditText.addTextChangedListener(loginTextChangeListener)
+            passowrdEditText.addTextChangedListener(loginTextChangeListener)
             loginBtn.isEnabled = false
             loginBtn.setOnClickListener {
-                if(isValidEmail(usernameEditText.text.toString()) ||
-                    !passowrdEditText.text.isNullOrBlank()){
+                if(isValidEmail(usernameEditText.text.toString()) &&
+                    passowrdEditText.text.toString() != ""){
                     viewModel.login(
                         LoginRequest(
                             username = usernameEditText.text.toString(),
