@@ -1,13 +1,16 @@
 package io.github.jyotimoykashyap.chatapp.ui.home
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.EditorBoundsInfo
 import androidx.recyclerview.widget.RecyclerView
 import io.github.jyotimoykashyap.chatapp.databinding.MessageItemViewBinding
 import io.github.jyotimoykashyap.chatapp.models.postmessage.MessageResponse
 import io.github.jyotimoykashyap.chatapp.util.Util
 
-class MessageAdapter(val map: Map<Int, List<MessageResponse>>, val list: List<MessageResponse>) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+class MessageAdapter(val map: Map<Int, List<MessageResponse>>, val list: List<MessageResponse>)
+    : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
 
     class MessageViewHolder(val binding: MessageItemViewBinding)
         : RecyclerView.ViewHolder(binding.root) {
@@ -17,7 +20,12 @@ class MessageAdapter(val map: Map<Int, List<MessageResponse>>, val list: List<Me
                 messageBody.text = messageResponse.body
                 timestamp.text = Util.convertTimeStamp(messageResponse.timestamp)
                 val msgCount = map[messageResponse.thread_id]?.size?.minus(1) ?: 0
-                messageCount.text = "${msgCount ?: 0} new messages in this thread"
+                if(msgCount == 1) {
+                    messageCount.text = "${msgCount ?: 0} message in this thread"
+                } else {
+                    messageCount.text = "${msgCount ?: 0} messages in this thread"
+                }
+
             }
         }
 

@@ -37,8 +37,9 @@ object Util {
 
         // time
         val hour = calendar.get(Calendar.HOUR)
-        val minute = calendar.get(Calendar.MINUTE)
+        val minute = String.format("%02d", calendar.get(Calendar.MINUTE))
         val amPm = calendar.getDisplayName(Calendar.AM_PM, Calendar.LONG, Locale.getDefault())
+            .uppercase(Locale.ROOT)
 
         return "$month $date $year, $hour:$minute $amPm"
     }

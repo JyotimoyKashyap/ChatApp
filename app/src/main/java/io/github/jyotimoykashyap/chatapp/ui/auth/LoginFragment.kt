@@ -19,6 +19,7 @@ import io.github.jyotimoykashyap.chatapp.databinding.FragmentLoginBinding
 import io.github.jyotimoykashyap.chatapp.models.login.LoginRequest
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
 import io.github.jyotimoykashyap.chatapp.util.Resource
+import io.github.jyotimoykashyap.chatapp.util.SharedPref
 import io.github.jyotimoykashyap.chatapp.viewmodels.LoginViewModel
 import io.github.jyotimoykashyap.chatapp.viewmodels.SharedViewModel
 
@@ -56,11 +57,14 @@ class LoginFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {
             // verify for valid email address
             binding.run {
-                if(usernameEditText.text.toString().isBlank())
+                if(usernameEditText.text.toString().isBlank()) {
                     usernameInputLayout.error = "Please enter your Email Address"
+                }
                 else {
-                    if(isValidEmail(usernameEditText.text.toString()))
+                    if(isValidEmail(usernameEditText.text.toString())) {
                         loginBtn.isEnabled = true
+                        usernameInputLayout.error = null
+                    }
                     else usernameInputLayout.error = "Please enter a valid Email Address"
                 }
             }
@@ -116,6 +120,9 @@ class LoginFragment : Fragment() {
             when(it) {
                 is Resource.Success -> {
                     sharedViewModel.loaderState.postValue(false)
+                    it.data?.auth_token?.let { token ->
+                        SharedPref.saveEntry(SharedPref.BRANCH_AUTH_TOKEN, token)
+                    }
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                 }
                 is Resource.Loading -> {

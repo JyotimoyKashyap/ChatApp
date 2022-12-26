@@ -2,6 +2,7 @@ package io.github.jyotimoykashyap.chatapp.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import io.github.jyotimoykashyap.chatapp.databinding.FragmentHomeBinding
 import io.github.jyotimoykashyap.chatapp.models.postmessage.MessageResponse
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
 import io.github.jyotimoykashyap.chatapp.util.Resource
+import io.github.jyotimoykashyap.chatapp.util.Util
 import io.github.jyotimoykashyap.chatapp.viewmodels.HomeViewModel
 import io.github.jyotimoykashyap.chatapp.viewmodels.SharedViewModel
 
@@ -30,8 +32,8 @@ class HomeFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var messageAdapter: MessageAdapter
-    private var list = listOf<MessageResponse>()
-    private var map = mutableMapOf<Int, MutableList<MessageResponse>>()
+    private val list = mutableListOf<MessageResponse>()
+    private val map = mutableMapOf<Int, MutableList<MessageResponse>>()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val sharedViewModel: SharedViewModel by activityViewModels()
@@ -85,7 +87,7 @@ class HomeFragment : Fragment() {
     @SuppressLint("NotifyDataSetChanged")
     private fun observeChanges() {
         // messages live data
-        viewModel.messagesLiveData.observe(viewLifecycleOwner) {
+        viewModel.messagesLiveData.observe(viewLifecycleOwner) { it ->
             when(it) {
                 is Resource.Success -> {
                     sharedViewModel.loaderState.postValue(false)
@@ -93,9 +95,17 @@ class HomeFragment : Fragment() {
                         displayNoMessagesScreen(true)
                     } else {
                         displayNoMessagesScreen(false)
-                        map = organizeMessages(it.data)
-                        list = getListForAdapter(map)
+                        map.clear()
+                        map.putAll(makeMessagesMap(it.data))
+                        sortMessagesInThread()
+                        list.clear()
+                        list.addAll(getListForAdapter(map))
+                        list.sortByDescending { Util.convertTimeStampToLong(it.timestamp) }
                         messageAdapter.notifyDataSetChanged()
+                        Log.i("messageadapter" , "Map: \nMap Size: ${map.size}\nList: ${it.data.size}")
+                        map.forEach { entry ->
+                            Log.i("messageadapter" , "Map Size for each list: ${entry.value.size}\n")
+                        }
                     }
                 }
                 is Resource.Loading -> {
@@ -107,6 +117,12 @@ class HomeFragment : Fragment() {
                     displayNoMessagesScreen(true)
                 }
             }
+        }
+    }
+
+    private fun sortMessagesInThread() {
+        map.forEach { entry ->
+            entry.value.sortByDescending { Util.convertTimeStampToLong(it.timestamp) }
         }
     }
 
@@ -127,12 +143,21 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun organizeMessages(messageList: List<MessageResponse>) =
-        messageList.associateBy(
-            keySelector = { it.thread_id },
-            valueTransform = { mutableListOf(it) }
-        ).toMutableMap()
-
+    private fun makeMessagesMap(messageList: List<MessageResponse>)
+    : MutableMap<out Int, MutableList<MessageResponse>> {
+        val map = mutableMapOf<Int, MutableList<MessageResponse>>()
+        messageList.forEach {
+            val messageListFromMap = map.getOrDefault(it.thread_id, null)?.toMutableList()
+            // there is not such list with this thread id
+            if(messageListFromMap == null) {
+                map[it.thread_id] = mutableListOf(it)
+            } else {
+                messageListFromMap.add(it)
+                map[it.thread_id] = messageListFromMap
+            }
+        }
+        return map
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
