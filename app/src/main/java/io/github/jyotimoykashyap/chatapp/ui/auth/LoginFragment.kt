@@ -3,6 +3,7 @@ package io.github.jyotimoykashyap.chatapp.ui.auth
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -122,7 +123,7 @@ class LoginFragment : Fragment() {
                 is Resource.Error -> {
                     sharedViewModel.loaderState.postValue(false)
                     Snackbar.make(
-                        binding.root,"Something went wrong!", Snackbar.LENGTH_SHORT
+                        binding.root, "Username or password is invalid", Snackbar.LENGTH_SHORT
                     )
                         .setAction("Retry") {
                             viewModel.login(
