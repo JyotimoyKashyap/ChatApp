@@ -44,7 +44,11 @@
         android:id="@+id/threadFragment"
         android:name="io.github.jyotimoykashyap.chatapp.ui.thread.ThreadFragment"
         android:label="fragment_thread"
-        tools:layout="@layout/fragment_thread" />
+        tools:layout="@layout/fragment_thread" >
+        <argument
+            android:name="messagesArray"
+            app:argType="io.github.jyotimoykashyap.chatapp.models.postmessage.MessageResponse[]" />
+    </fragment>
     <fragment
         android:id="@+id/firstFragment"
         android:name="io.github.jyotimoykashyap.chatapp.FirstFragment"

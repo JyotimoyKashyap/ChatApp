@@ -14,7 +14,7 @@ class ThreadViewModel(
     private val branchApiRepository: BranchApiRepository
 ) : ViewModel() {
     private val _messageResponse = MutableLiveData<Resource<MessageResponse>>()
-    private var messageResponse = _messageResponse
+    var messageResponse = _messageResponse
 
     fun sendMessage(messageRequest: MessageRequest) = viewModelScope.launch {
         _messageResponse.postValue(Resource.Loading())

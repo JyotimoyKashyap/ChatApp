@@ -11,11 +11,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import io.github.jyotimoykashyap.chatapp.databinding.FragmentHomeBinding
+import io.github.jyotimoykashyap.chatapp.databinding.FragmentThreadBinding
 import io.github.jyotimoykashyap.chatapp.models.postmessage.MessageResponse
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
+import io.github.jyotimoykashyap.chatapp.ui.thread.ThreadFragmentArgs
 import io.github.jyotimoykashyap.chatapp.util.Resource
 import io.github.jyotimoykashyap.chatapp.util.Util
 import io.github.jyotimoykashyap.chatapp.viewmodels.HomeViewModel
@@ -26,7 +29,7 @@ private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment() , MessageAdapter.MessageClickListener{
 
     private var param1: String? = null
     private var param2: String? = null
@@ -74,7 +77,7 @@ class HomeFragment : Fragment() {
         viewModel.getAllMessages()
 
         // get adapter
-        messageAdapter = MessageAdapter(map, list)
+        messageAdapter = MessageAdapter(map, list, this)
         binding.rvMessageView.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
@@ -173,5 +176,14 @@ class HomeFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onMessageCardClick(messageResponse: MessageResponse) {
+        // send the list of messages with it in chronological order
+        val listOfMessages = map[messageResponse.thread_id] ?: mutableListOf()
+        listOfMessages.reverse()
+        // now send this list to the next fragment while navigating
+        val action = HomeFragmentDirections.actionHomeFragmentToThreadFragment(listOfMessages.toTypedArray())
+        findNavController().navigate(action)
     }
 }
