@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/threadFragment"
         android:name="io.github.jyotimoykashyap.chatapp.ui.thread.ThreadFragment"
-        android:label="fragment_thread"
+        android:label="Thread"
         tools:layout="@layout/fragment_thread" >
         <argument
             android:name="messagesArray"

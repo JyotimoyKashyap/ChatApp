@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -16,6 +17,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import io.github.jyotimoykashyap.chatapp.R
 import io.github.jyotimoykashyap.chatapp.databinding.FragmentThreadBinding
+import io.github.jyotimoykashyap.chatapp.models.postmessage.MessageRequest
 import io.github.jyotimoykashyap.chatapp.models.postmessage.MessageResponse
 import io.github.jyotimoykashyap.chatapp.repository.BranchApiRepository
 import io.github.jyotimoykashyap.chatapp.util.Resource
@@ -68,6 +70,7 @@ class ThreadFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
+        requireActivity().window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         _binding = FragmentThreadBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -99,6 +102,21 @@ class ThreadFragment : Fragment() {
             adapter = ThreadAdapter(subMessageList)
             rvThreadView.adapter = adapter
             adapter.notifyDataSetChanged()
+
+            messageInputLayout.setEndIconOnClickListener {
+                Util.hideSoftKeyboard(binding.root, requireContext())
+                binding.messageEdittext.text?.clear()
+                binding.messageEdittext.clearFocus()
+                if(messageEdittext.text?.isNotEmpty() == true
+                    || messageEdittext.text?.isNotBlank() == true) {
+                    viewModel.sendMessage(
+                        MessageRequest(
+                            body = messageEdittext.text.toString(),
+                            thread_id = messageList[0].thread_id
+                        )
+                    )
+                }
+            }
         }
     }
 

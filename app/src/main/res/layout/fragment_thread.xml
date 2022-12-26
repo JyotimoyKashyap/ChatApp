@@ -6,43 +6,86 @@
     android:layout_height="match_parent"
     tools:context=".ui.thread.ThreadFragment">
 
-    <include
-        android:id="@+id/thread_view"
-        layout="@layout/thread_item_fragment" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_thread_view"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_content"
+        android:isScrollContainer="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/thread_view"
-        tools:listitem="@layout/thread_item_view" />
+        android:layout_height="0dp">
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <include
+                android:id="@+id/thread_view"
+                layout="@layout/thread_item_fragment" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/message_input_layout"
-        android:layout_width="0dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_thread_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:itemCount="2"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/thread_view"
+                tools:listitem="@layout/thread_item_view" />
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+    
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="12dp"
-        app:boxBackgroundMode="filled"
-        android:hint="Type your message here . . ."
-        app:startIconDrawable="@drawable/ic_baseline_message_24"
-        app:endIconDrawable="@drawable/ic_baseline_send_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="horizontal"
+        android:gravity="end"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/message_edittext"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            app:cardCornerRadius="0dp"
+            style="?attr/materialCardViewFilledStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/message_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="8dp"
+                app:boxBackgroundMode="none"
+                app:endIconMode="custom"
+                android:hint="Type your message here . . ."
+                app:endIconContentDescription="Send Message Button"
+                app:startIconDrawable="@drawable/ic_baseline_message_24"
+                app:endIconDrawable="@drawable/ic_baseline_send_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/message_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

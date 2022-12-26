@@ -11,6 +11,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
+import android.view.WindowManager
 import androidx.activity.viewModels
 import io.github.jyotimoykashyap.chatapp.util.SharedPref
 import io.github.jyotimoykashyap.chatapp.databinding.ActivityMainBinding
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, true)
         super.onCreate(savedInstanceState)
         Log.i("chatapp" , "its here")
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         SharedPref.createSharedPreferences(applicationContext)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
