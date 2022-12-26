@@ -35,7 +35,9 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
+        appBarConfiguration = AppBarConfiguration
+            .Builder(R.id.homeFragment)
+            .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         observeChanges()
@@ -57,6 +59,10 @@ class MainActivity : AppCompatActivity() {
                     "navigation",
                     "Destination -> ID: ${destination.id}     Label: ${destination.label}"
                 )
+                when(destination.label) {
+                    "Welcome" -> supportActionBar?.hide()
+                    "Home" -> supportActionBar?.show()
+                }
             }
 
     }

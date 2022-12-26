@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="io.github.jyotimoykashyap.chatapp.ui.auth.LoginFragment"
-        android:label="Login"
+        android:label="Get Started"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"

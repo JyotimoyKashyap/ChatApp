@@ -105,8 +105,6 @@ class ThreadFragment : Fragment() {
 
             messageInputLayout.setEndIconOnClickListener {
                 Util.hideSoftKeyboard(binding.root, requireContext())
-                binding.messageEdittext.text?.clear()
-                binding.messageEdittext.clearFocus()
                 if(messageEdittext.text?.isNotEmpty() == true
                     || messageEdittext.text?.isNotBlank() == true) {
                     viewModel.sendMessage(
@@ -115,6 +113,8 @@ class ThreadFragment : Fragment() {
                             thread_id = messageList[0].thread_id
                         )
                     )
+                    binding.messageEdittext.text?.clear()
+                    binding.messageEdittext.clearFocus()
                 }
             }
         }
