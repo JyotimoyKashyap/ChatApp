@@ -24,6 +24,12 @@ object SharedPref {
         )
     }
 
+    fun clearSharedPrefs() {
+        sharedPreferences.edit()
+            .clear()
+            .apply()
+    }
+
     fun saveEntry(key: String, value: Any) {
         when(value) {
             is Boolean -> {
