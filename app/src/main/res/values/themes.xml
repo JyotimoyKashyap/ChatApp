@@ -22,4 +22,9 @@
         <item name="fontFamily">@font/poppins_bold</item>
         <item name="android:textSize">22sp</item>
     </style>
+
+    <style name="ActionBarTitleTextStyle" >
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">26sp</item>
+    </style>
 </resources>

@@ -74,7 +74,7 @@ class SplashFragment : Fragment() {
                     // move to home page
                     Handler(Looper.getMainLooper()).postDelayed(Runnable {
                         findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
-                    }, 2000)
+                    }, 1000)
                 }
                 is Resource.Loading -> {
                     // stay on the splash screen
