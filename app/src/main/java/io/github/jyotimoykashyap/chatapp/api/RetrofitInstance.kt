@@ -1,6 +1,6 @@
 package io.github.jyotimoykashyap.chatapp.api
 
-import android.content.Context
+
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,7 +27,7 @@ class RetrofitInstance {
                 .build()
         }
 
-        val api by lazy {
+        val api: BranchApi by lazy {
             retrofit.create(BranchApi::class.java)
         }
     }

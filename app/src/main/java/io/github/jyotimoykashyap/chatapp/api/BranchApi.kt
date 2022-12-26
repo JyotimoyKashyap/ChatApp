@@ -24,7 +24,7 @@ interface BranchApi {
         @Body messageRequest: MessageRequest
     ) : Response<MessageResponse>
 
-    // will do it later
+    // not required for app's functionality
     @POST("reset")
     suspend fun reset()
 }

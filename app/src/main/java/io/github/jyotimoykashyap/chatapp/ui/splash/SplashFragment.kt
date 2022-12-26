@@ -18,14 +18,10 @@ import io.github.jyotimoykashyap.chatapp.util.Resource
 import io.github.jyotimoykashyap.chatapp.viewmodels.SplashViewModel
 
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 
+@Suppress("UNCHECKED_CAST")
 class SplashFragment : Fragment() {
-
-    private var param1: String? = null
-    private var param2: String? = null
 
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!
@@ -35,14 +31,6 @@ class SplashFragment : Fragment() {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return SplashViewModel(branchApiRepository = repository) as T
             }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -72,16 +60,17 @@ class SplashFragment : Fragment() {
             when(it) {
                 is Resource.Success -> {
                     // move to home page
-                    Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                    Handler(Looper.getMainLooper()).postDelayed({
                         findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
                     }, 1000)
                 }
                 is Resource.Loading -> {
                     // stay on the splash screen
+                    // there is timeout so loading state won't be infinite
                 }
                 is Resource.Error -> {
                     // move to login screen
-                    Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                    Handler(Looper.getMainLooper()).postDelayed({
                         findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
                     }, 2000)
                 }
@@ -92,16 +81,5 @@ class SplashFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SplashFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }
