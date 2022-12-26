@@ -73,7 +73,8 @@ class ThreadFragment : Fragment() {
 
         binding.run {
             threadView.messageBody.text = messageList[0].body
-            threadView.timestamp.text = Util.convertTimeStamp(messageList[0].timestamp)
+            threadView.timestamp.text = Util.convertTimeStamp(messageList[0].timestamp) +
+                    "\nUser ID : ${messageList[0].user_id} | Thread ID : ${messageList[0].thread_id}"
 
 
             adapter = ThreadAdapter(subMessageList)

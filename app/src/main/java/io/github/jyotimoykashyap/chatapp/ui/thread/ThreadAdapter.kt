@@ -16,7 +16,7 @@ class ThreadAdapter(val list: List<MessageResponse>)
         fun bind(messageResponse: MessageResponse) {
             binding.run {
                 messageBody.text = messageResponse.body
-                timestamp.text = Util.convertTimeStamp(messageResponse.timestamp)
+                timestamp.text = Util.convertTimeStamp(messageResponse.timestamp) + "\nUser ID : ${messageResponse.user_id}"
             }
         }
 
