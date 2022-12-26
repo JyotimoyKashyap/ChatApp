@@ -180,8 +180,10 @@ class HomeFragment : Fragment() , MessageAdapter.MessageClickListener{
 
     override fun onMessageCardClick(messageResponse: MessageResponse) {
         // send the list of messages with it in chronological order
+        Log.i("messageview" , "Message Response : $messageResponse")
         val listOfMessages = map[messageResponse.thread_id] ?: mutableListOf()
         listOfMessages.reverse()
+        Log.i("messageview" , "List of messages : $listOfMessages")
         // now send this list to the next fragment while navigating
         val action = HomeFragmentDirections.actionHomeFragmentToThreadFragment(listOfMessages.toTypedArray())
         findNavController().navigate(action)

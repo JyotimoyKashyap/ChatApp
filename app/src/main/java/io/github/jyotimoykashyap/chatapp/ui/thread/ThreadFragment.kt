@@ -82,10 +82,12 @@ class ThreadFragment : Fragment() {
     private fun initUi() {
         // extract the info
         messageList = threadFragmentArgs.messagesArray.asList().toMutableList()
+        Log.i("messageview" , "List in Thread : $messageList")
         if(messageList.size == 1) {
             subMessageList = mutableListOf()
         } else {
-            subMessageList = messageList.subList(1, messageList.lastIndex)
+            subMessageList = messageList.subList(1, messageList.lastIndex.plus(1))
+            Log.i("messageview" , "Sub message View: $subMessageList")
         }
         // show the first message in the UI
         binding.run {
